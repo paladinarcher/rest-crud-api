@@ -1,0 +1,25 @@
+version: '3'
+services:
+  api:
+    volumes:
+      - ./:/usr/src/app
+    build:
+      context: .
+      dockerfile: Dockerfile.local
+    # depends_on:
+    #   - dynamodb
+    # links:
+    #   - dynamodb
+
+  # dynamodb:
+  #   image: amazon/dynamodb-local
+  #   hostname: dynamodb-local
+  #   container_name: dynamodb-local
+  #   ports:
+  #     - "8000:8000"
+  #   expose:
+  #     - "8000"
+
+# docker-compose -f docker-compose.yml build
+# docker-compose build
+# docker-compose up
