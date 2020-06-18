@@ -9,7 +9,7 @@ const dynamoService = require('./dynamodb.service');
 chai.use(chaiHttp);
 chai.should();
 
-describe("DynamodbService", () => {
+describe('DynamodbService', () => {
   // The DynamoDB DocumentClient
   let documentClient;
 
@@ -18,20 +18,17 @@ describe("DynamodbService", () => {
     documentClient = dynamoService.getDocumentClient();
   });
 
-  describe("getDocumentsFromTable", () => {
+  describe('getDocumentsFromTable', () => {
     afterEach(() => {
       documentClient.scan.restore();
     });
 
-    it("should get all document records from DynamoDB", async () => {
+    it('should get all document records from DynamoDB', async () => {
       try {
         // Arrange
-          const expected = {
-            Items: [
-              {id: 5},
-              {id: 6}
-            ]
-          };
+        const expected = {
+          Items: [{ id: 5 }, { id: 6 }],
+        };
         sinon.stub(documentClient, 'scan').callsFake((params, callback) => {
           callback(undefined, expected);
         });
@@ -48,9 +45,9 @@ describe("DynamodbService", () => {
       }
     });
 
-    it("should return errors from DynamoDB", async () => {
+    it('should return errors from DynamoDB', async () => {
       const expected = {
-        error: {id: 6, text: 'error text'}
+        error: { id: 6, text: 'error text' },
       };
       try {
         // Arrange
@@ -63,7 +60,6 @@ describe("DynamodbService", () => {
 
         // Assert
         chai.assert.fail('Failed to return the Dynamo ERROR');
-
       } catch (e) {
         e.error.id.should.equal(expected.error.id);
         e.error.text.should.equal(expected.error.text);
@@ -71,17 +67,17 @@ describe("DynamodbService", () => {
     });
   });
 
-  describe("getDocumentFromTable", () => {
+  describe('getDocumentFromTable', () => {
     afterEach(() => {
       documentClient.get.restore();
     });
 
-    it("should get document record from DynamoDB with the given ID", async () => {
+    it('should get document record from DynamoDB with the given ID', async () => {
       try {
         // Arrange
-        const expected = {id: 5};
+        const expected = { id: 5 };
         const valueMock = {
-          Item: expected
+          Item: expected,
         };
 
         sinon.stub(documentClient, 'get').callsFake((params, callback) => {
@@ -89,7 +85,10 @@ describe("DynamodbService", () => {
         });
 
         // Act
-        actual = await dynamoService.getDocumentFromTable('documents', expected.id);
+        actual = await dynamoService.getDocumentFromTable(
+          'documents',
+          expected.id
+        );
 
         // Assert
         actual.id.should.equal(expected.id);
@@ -98,9 +97,9 @@ describe("DynamodbService", () => {
       }
     });
 
-    it("should return errors from DynamoDB", async () => {
+    it('should return errors from DynamoDB', async () => {
       const expected = {
-        error: {id: 6, text: 'error text'}
+        error: { id: 6, text: 'error text' },
       };
       try {
         // Arrange
@@ -120,7 +119,7 @@ describe("DynamodbService", () => {
     });
   });
 
-  describe("addDocumentToTable", () => {
+  describe('addDocumentToTable', () => {
     afterEach(() => {
       documentClient.put.restore();
     });
@@ -128,7 +127,7 @@ describe("DynamodbService", () => {
     it("should save a document and return it's ID", async () => {
       try {
         // Arrange
-        document = {stuff: "test_stuff"};
+        document = { stuff: 'test_stuff' };
         sinon.stub(documentClient, 'put').callsFake((params, callback) => {
           callback(undefined, {});
         });
@@ -143,13 +142,13 @@ describe("DynamodbService", () => {
       }
     });
 
-    it("should return errors from DynamoDB", async () => {
+    it('should return errors from DynamoDB', async () => {
       const expected = {
-        error: {id: 6, text: 'error text'}
+        error: { id: 6, text: 'error text' },
       };
       try {
         // Arrange
-        document = {stuff: "test_stuff"};
+        document = { stuff: 'test_stuff' };
         sinon.stub(documentClient, 'put').callsFake((params, callback) => {
           callback(expected, undefined);
         });
@@ -159,6 +158,55 @@ describe("DynamodbService", () => {
 
         // Assert
         chai.assert.fail('Failed to return the document id');
+      } catch (e) {
+        e.error.id.should.equal(expected.error.id);
+        e.error.text.should.equal(expected.error.text);
+      }
+    });
+  });
+
+  describe('deleteDocumentFromTable', () => {
+    afterEach(() => {
+      documentClient.delete.restore();
+    });
+
+    it('should delete document record from DynamoDB with the given ID', async () => {
+      try {
+        // Arrange
+        const expected = { id: 5 };
+
+        sinon.stub(documentClient, 'delete').callsFake((params, callback) => {
+          callback(undefined, expected);
+        });
+
+        // Act
+        actual = await dynamoService.deleteDocumentFromTable(
+          'documents',
+          expected.id
+        );
+
+        // Assert
+        actual.id.should.equal(expected.id);
+      } catch (e) {
+        chai.assert.fail('Failed to return the Dynamo data');
+      }
+    });
+
+    it('should return errors from DynamoDB', async () => {
+      const expected = {
+        error: { id: 6, text: 'error text' },
+      };
+      try {
+        // Arrange
+        sinon.stub(documentClient, 'delete').callsFake((params, callback) => {
+          callback(expected, undefined);
+        });
+
+        // Act
+        actual = await dynamoService.deleteDocumentFromTable('documents');
+
+        // Assert
+        chai.assert.fail('Failed to delete the Dynamo data');
       } catch (e) {
         e.error.id.should.equal(expected.error.id);
         e.error.text.should.equal(expected.error.text);

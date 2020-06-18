@@ -15,8 +15,8 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use('/documents', documentsRoutes);
 
-app.listen(config.port, config.host, (e)=> {
-  if(e) {
+app.listen(config.port, config.host, (e) => {
+  if (e) {
     throw new Error('Internal Server Error');
   }
 });
