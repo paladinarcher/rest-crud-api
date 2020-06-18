@@ -4,14 +4,16 @@
 
 1. Clone the repo
 2. Run `npm install` in the directory.
-3. Set up a environment file in the root of the app called `.env` the file will hold your AWS keys. The file should look like this:
+3. Create a DynamoDB table to use.
+4. Set up a environment file in the root of the app called `.env` the file will hold your AWS keys. The file should look like this:
 
 ```
-AWS_ACCESS_KEY_ID={{Your Access Key}}
-AWS_SECRET_ACCESS_KEY={{Your Secret Access Key}}
+AWS_ACCESS_KEY_ID=Your Access Key
+AWS_SECRET_ACCESS_KEY=Your Secret Access Key
+AWS_DYNAMO_TABLE_NAME=Your Table Name
 ```
 
-3. Run `docker-compose build` followed by `docker-compose up` This will run the API in development mode running at `0.0.0.0:3000` Changes in the project will be reflected in the API.
+5. Run `docker-compose build` followed by `docker-compose up` This will run the API in development mode running at `0.0.0.0:3000` Changes in the project will be reflected in the API.
 
 ## Unit Testing
 

@@ -1,6 +1,6 @@
 const DynamodbService = require('../services/dynamodb.service');
 
-const tableName = 'documents';
+const tableName = process.env.AWS_DYNAMO_TABLE_NAME;
 
 DocumentsController = {
   getDocumentsFromTable: (req, res) => {
