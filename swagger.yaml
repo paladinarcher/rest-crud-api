@@ -1,92 +1,92 @@
-swagger: "2.0"
+swagger: '2.0'
 info:
-  description: "This is a simple sample server. It can store and retrieve JSON documents from a DynamoDB."
-  version: "1.0.0"
-  title: "Simple API Template"
+  description: 'This is a simple sample server. It can store and retrieve JSON documents from a DynamoDB.'
+  version: '1.0.0'
+  title: 'Simple API Template'
   license:
-    name: "Apache 2.0"
-    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
-basePath: "/v2"
+    name: 'Apache 2.0'
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+basePath: '/v2'
 tags:
-- name: "documents"
-  description: "Store and retrieve JSON documents"
+  - name: 'documents'
+    description: 'Store and retrieve JSON documents'
 schemes:
-- "https"
-- "http"
+  - 'https'
+  - 'http'
 paths:
   /documents:
     post:
       tags:
-      - "documents"
-      summary: "Add a new document to the data store"
-      description: ""
-      operationId: "addDocument"
+        - 'documents'
+      summary: 'Add a new document to the data store'
+      description: ''
+      operationId: 'addDocument'
       consumes:
-      - "application/json"
+        - 'application/json'
       produces:
-      - "application/json"
+        - 'application/json'
       parameters:
-      - in: "body"
-        name: "body"
-        description: "A new document that needs to be added to the data store"
-        required: true
-        schema:
-          $ref: "#/definitions/Document"
+        - in: 'body'
+          name: 'body'
+          description: 'A new document that needs to be added to the data store'
+          required: true
+          schema:
+            $ref: '#/definitions/Document'
       responses:
         405:
-          description: "Invalid input"
+          description: 'Invalid input'
     get:
       tags:
-      - "documents"
-      summary: "Get all documents"
-      description: "Returns all documents"
-      operationId: "getDocuments"
+        - 'documents'
+      summary: 'Get all documents'
+      description: 'Returns all documents'
+      operationId: 'getDocuments'
       produces:
-      - "application/json"
+        - 'application/json'
       responses:
         200:
-          description: "successful operation"
+          description: 'successful operation'
           schema:
-            type: "array"
+            type: 'array'
             items:
-              $ref: "#/definitions/Document"
+              $ref: '#/definitions/Document'
         404:
-          description: "Document not found"
+          description: 'Document not found'
   /documents/{documentId}:
     get:
       tags:
-      - "documents"
-      summary: "Find a document by ID"
-      description: "Returns a single document"
-      operationId: "getDocumentById"
+        - 'documents'
+      summary: 'Find a document by ID'
+      description: 'Returns a single document'
+      operationId: 'getDocumentById'
       produces:
-      - "application/json"
+        - 'application/json'
       parameters:
-      - name: "documentId"
-        in: "path"
-        description: "ID of document to return"
-        required: true
-        type: "string"
+        - name: 'documentId'
+          in: 'path'
+          description: 'ID of document to return'
+          required: true
+          type: 'string'
       responses:
         200:
-          description: "successful operation"
+          description: 'successful operation'
           schema:
-            $ref: "#/definitions/Document"
+            $ref: '#/definitions/Document'
         404:
-          description: "Document not found"
+          description: 'Document not found'
 definitions:
   Document:
-    type: "object"
+    type: 'object'
     properties:
       id:
-        type: "string"
+        type: 'string'
   ApiResponse:
-    type: "object"
+    type: 'object'
     properties:
       code:
-        type: "integer"
-        format: "int32"
+        type: 'integer'
+        format: 'int32'
       type:
-        type: "string"
+        type: 'string'
       message:
-        type: "string"
+        type: 'string'

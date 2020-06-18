@@ -10,7 +10,6 @@ services:
     #   - dynamodb
     # links:
     #   - dynamodb
-
   # dynamodb:
   #   image: amazon/dynamodb-local
   #   hostname: dynamodb-local
@@ -19,7 +18,6 @@ services:
   #     - "8000:8000"
   #   expose:
   #     - "8000"
-
 # docker-compose -f docker-compose.yml build
 # docker-compose build
 # docker-compose up

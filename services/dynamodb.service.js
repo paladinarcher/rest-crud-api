@@ -6,55 +6,55 @@ dynamodb = new AWS.DynamoDB.DocumentClient({
   // endpoint: 'http://127.0.0.1:8000',
   region: 'us-west-2',
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
 });
 
 DynamodbService = {
   getDocumentsFromTable: (tableName) => {
-    var params = {
-      TableName: tableName
-     };
+    const params = {
+      TableName: tableName,
+    };
 
-     return new Promise((resolve, reject) => {
-       dynamodb.scan(params, (err, data) => {
+    return new Promise((resolve, reject) => {
+      dynamodb.scan(params, (err, data) => {
         if (err) {
           reject(err);
         } else {
           resolve(data.Items);
         }
-       })
-     });
+      });
+    });
   },
 
   getDocumentFromTable: (tableName, documentId) => {
-    var params = {
+    const params = {
       Key: {
-        id: documentId
+        id: documentId,
       },
-      TableName: tableName
-     };
+      TableName: tableName,
+    };
 
-     return new Promise((resolve, reject) => {
-       dynamodb.get(params, (err, data) => {
+    return new Promise((resolve, reject) => {
+      dynamodb.get(params, (err, data) => {
         if (err) {
-     reject(err);
+          reject(err);
         } else {
           resolve(data.Item);
         }
-       })
-     });
+      });
+    });
   },
 
   addDocumentToTable: (tableName, document) => {
     const documentId = uuid.v4();
     const converted = {
       ...document,
-      id: documentId
+      id: documentId,
     };
 
     const docToAdd = {
       Item: converted,
-      TableName: tableName
+      TableName: tableName,
     };
 
     return new Promise((resolve, reject) => {
@@ -62,7 +62,7 @@ DynamodbService = {
         if (err) {
           reject(err);
         } else {
-          resolve({id: documentId});
+          resolve({ id: documentId });
         }
       });
     });
@@ -70,8 +70,7 @@ DynamodbService = {
 
   getDocumentClient: () => {
     return dynamodb;
-  }
-  
-}
+  },
+};
 
 module.exports = DynamodbService;
