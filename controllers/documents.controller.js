@@ -50,6 +50,24 @@ DocumentsController = {
       res.status(500).send(error);
     }
   },
+
+  deleteDocumentFromTable: (req, res) => {
+    try {
+      DynamodbService.deleteDocumentFromTable(
+        tableName,
+        req.params.documentId
+      ).then(
+        (resp) => {
+          res.status(200).send(resp);
+        },
+        (error) => {
+          res.status(405).send('Document not found');
+        }
+      );
+    } catch (error) {
+      res.status(500).send(error);
+    }
+  },
 };
 
 module.exports = DocumentsController;

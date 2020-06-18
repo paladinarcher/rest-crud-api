@@ -3,7 +3,6 @@ const uuid = require('uuid');
 
 dynamodb = new AWS.DynamoDB.DocumentClient({
   apiVersion: '2012-08-10',
-  // endpoint: 'http://127.0.0.1:8000',
   region: 'us-west-2',
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -59,6 +58,23 @@ DynamodbService = {
 
     return new Promise((resolve, reject) => {
       dynamodb.put(docToAdd, (err, data) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve({ id: documentId });
+        }
+      });
+    });
+  },
+
+  deleteDocumentFromTable: (tableName, documentId) => {
+    const docToDelete = {
+      Key: { id: documentId },
+      TableName: tableName,
+    };
+
+    return new Promise((resolve, reject) => {
+      dynamodb.delete(docToDelete, (err, data) => {
         if (err) {
           reject(err);
         } else {

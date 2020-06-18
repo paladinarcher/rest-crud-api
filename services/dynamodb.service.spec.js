@@ -164,4 +164,53 @@ describe('DynamodbService', () => {
       }
     });
   });
+
+  describe('deleteDocumentFromTable', () => {
+    afterEach(() => {
+      documentClient.delete.restore();
+    });
+
+    it('should delete document record from DynamoDB with the given ID', async () => {
+      try {
+        // Arrange
+        const expected = { id: 5 };
+
+        sinon.stub(documentClient, 'delete').callsFake((params, callback) => {
+          callback(undefined, expected);
+        });
+
+        // Act
+        actual = await dynamoService.deleteDocumentFromTable(
+          'documents',
+          expected.id
+        );
+
+        // Assert
+        actual.id.should.equal(expected.id);
+      } catch (e) {
+        chai.assert.fail('Failed to return the Dynamo data');
+      }
+    });
+
+    it('should return errors from DynamoDB', async () => {
+      const expected = {
+        error: { id: 6, text: 'error text' },
+      };
+      try {
+        // Arrange
+        sinon.stub(documentClient, 'delete').callsFake((params, callback) => {
+          callback(expected, undefined);
+        });
+
+        // Act
+        actual = await dynamoService.deleteDocumentFromTable('documents');
+
+        // Assert
+        chai.assert.fail('Failed to delete the Dynamo data');
+      } catch (e) {
+        e.error.id.should.equal(expected.error.id);
+        e.error.text.should.equal(expected.error.text);
+      }
+    });
+  });
 });

@@ -100,4 +100,30 @@ describe('DocumentsController', () => {
         });
     });
   });
+
+  describe('DELETE: /documents/{documentId)', () => {
+    afterEach(() => {
+      documentClient.delete.restore();
+    });
+
+    it('should delete document record with the given ID', (done) => {
+      // Arrange
+      const expected = { id: '5' };
+
+      sinon.stub(documentClient, 'delete').callsFake((params, callback) => {
+        callback(undefined, expected);
+      });
+
+      // Act
+      chai
+        .request(app)
+        .delete('/documents/5')
+        .end((err, res) => {
+          // Assert
+          res.should.have.status(200);
+          res.body.id.should.equal(expected.id);
+          done();
+        });
+    });
+  });
 });
