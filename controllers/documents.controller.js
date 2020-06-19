@@ -68,6 +68,25 @@ DocumentsController = {
       res.status(500).send(error);
     }
   },
+
+  updateDocumentInTable: (req, res) => {
+    try {
+      DynamodbService.updateDocumentInTable(
+        tableName,
+        req.params.documentId,
+        req.body
+      ).then(
+        (resp) => {
+          res.status(200).send(resp);
+        },
+        (error) => {
+          res.status(405).send('Document not found');
+        }
+      );
+    } catch (error) {
+      res.status(500).send(error);
+    }
+  },
 };
 
 module.exports = DocumentsController;
