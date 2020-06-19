@@ -84,6 +84,28 @@ DynamodbService = {
     });
   },
 
+  updateDocumentInTable: (tableName, documentId, document) => {
+    const converted = {
+      ...document,
+      id: documentId,
+    };
+
+    const docToUpdate = {
+      Item: converted,
+      TableName: tableName,
+    };
+
+    return new Promise((resolve, reject) => {
+      dynamodb.put(docToUpdate, (err, data) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve({ id: documentId });
+        }
+      });
+    });
+  },
+
   getDocumentClient: () => {
     return dynamodb;
   },

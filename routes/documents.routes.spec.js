@@ -45,6 +45,23 @@ describe('DocumentsController', () => {
           done();
         });
     });
+
+    it('should return a 404 if DynamoDB has an error', (done) => {
+      // Arrange
+      sinon.stub(documentClient, 'scan').callsFake((params, callback) => {
+        callback({}, undefined);
+      });
+
+      // Act
+      chai
+        .request(app)
+        .get('/documents')
+        .end((err, res) => {
+          // Assert
+          res.should.have.status(404);
+          done();
+        });
+    });
   });
 
   describe('GET: /documents/{documentId)', () => {
@@ -74,6 +91,23 @@ describe('DocumentsController', () => {
           done();
         });
     });
+
+    it('should return a 404 if DynamoDB has an error', (done) => {
+      // Arrange
+      sinon.stub(documentClient, 'get').callsFake((params, callback) => {
+        callback({}, undefined);
+      });
+
+      // Act
+      chai
+        .request(app)
+        .post('/documents/5')
+        .end((err, res) => {
+          // Assert
+          res.should.have.status(404);
+          done();
+        });
+    });
   });
 
   describe('POST: /documents', () => {
@@ -96,6 +130,24 @@ describe('DocumentsController', () => {
           // Assert
           res.should.have.status(200);
           res.body.id.should.exist;
+          done();
+        });
+    });
+
+    it('should return a 405 if DynamoDB has an error', (done) => {
+      // Arrange
+      sinon.stub(documentClient, 'put').callsFake((params, callback) => {
+        callback({}, undefined);
+      });
+
+      // Act
+      chai
+        .request(app)
+        .post('/documents')
+        .send('"fruit":"banana"')
+        .end((err, res) => {
+          // Assert
+          res.should.have.status(405);
           done();
         });
     });
@@ -122,6 +174,67 @@ describe('DocumentsController', () => {
           // Assert
           res.should.have.status(200);
           res.body.id.should.equal(expected.id);
+          done();
+        });
+    });
+
+    it('should return a 405 if DynamoDB has an error', (done) => {
+      // Arrange
+      sinon.stub(documentClient, 'delete').callsFake((params, callback) => {
+        callback({}, undefined);
+      });
+
+      // Act
+      chai
+        .request(app)
+        .delete('/documents/5')
+        .send('"fruit":"banana"')
+        .end((err, res) => {
+          // Assert
+          res.should.have.status(405);
+          done();
+        });
+    });
+  });
+
+  describe('PUT: /documents/{documentId)', () => {
+    afterEach(() => {
+      documentClient.put.restore();
+    });
+
+    it("should save a document and return it's ID", (done) => {
+      // Arrange
+      sinon.stub(documentClient, 'put').callsFake((params, callback) => {
+        callback(undefined, {});
+      });
+
+      // Act
+      chai
+        .request(app)
+        .put('/documents/5')
+        .send('"fruit":"banana"')
+        .end((err, res) => {
+          // Assert
+          res.should.have.status(200);
+          res.body.id.should.exist;
+          done();
+        });
+    });
+
+    it('should return a 405 if DynamoDB has an error', (done) => {
+      // Arrange
+      sinon.stub(documentClient, 'put').callsFake((params, callback) => {
+        callback({}, undefined);
+      });
+
+      // Act
+      chai
+        .request(app)
+        .put('/documents/5')
+        .send('"fruit":"banana"')
+        .end((err, res) => {
+          // Assert
+          res.should.have.status(405);
           done();
         });
     });

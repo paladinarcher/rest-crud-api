@@ -95,6 +95,31 @@ paths:
             $ref: '#/definitions/Document'
         404:
           description: 'Document not found'
+    put:
+      tags:
+        - 'documents'
+      summary: 'Updates an exsisting document in the data store'
+      description: ''
+      operationId: 'updateDocument'
+      consumes:
+        - 'application/json'
+      produces:
+        - 'application/json'
+      parameters:
+        - name: 'documentId'
+          in: 'path'
+          description: 'ID of document to update'
+          required: true
+          type: 'string'
+        - in: 'body'
+          name: 'body'
+          description: 'An updated document that needs to be updated in the data store'
+          required: true
+          schema:
+            $ref: '#/definitions/Document'
+      responses:
+        405:
+          description: 'Document not found'
 definitions:
   Document:
     type: 'object'

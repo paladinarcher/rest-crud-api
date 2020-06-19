@@ -86,6 +86,48 @@
       "response": []
     },
     {
+      "name": "Delete Document By ID",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "9b4d3c52-19f1-472b-9563-74222c1f9497",
+            "exec": [""],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "id": "a0a2697b-fa9c-4ad9-a6f0-0366e4e3348d",
+            "exec": [
+              "var jsonData = pm.response.json();\r",
+              "\r",
+              "pm.test(\"response is ok\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Retrieves the expected document\", function () {\r",
+              "    pm.expect(jsonData.id).is.to.equal(\"a0154743-3712-47eb-87ea-19b98c0aab14\");\r",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "0.0.0.0:3000/documents/a0154743-3712-47eb-87ea-19b98c0aab14",
+          "host": ["0", "0", "0", "0"],
+          "port": "3000",
+          "path": ["documents", "a0154743-3712-47eb-87ea-19b98c0aab14"]
+        }
+      },
+      "response": []
+    },
+    {
       "name": "Post Document",
       "event": [
         {
@@ -132,6 +174,57 @@
           "host": ["0", "0", "0", "0"],
           "port": "3000",
           "path": ["documents"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Post Document Copy",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "298725b6-5f36-4cf4-8cb9-816bd3d9e906",
+            "exec": [
+              "var jsonData = pm.response.json();\r",
+              "\r",
+              "pm.test(\"response is ok\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"ID for the document is returned\", function () {\r",
+              "    pm.response.to.be.withBody;\r",
+              "    pm.expect(jsonData.id.length).is.to.equal(36);\r",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\"id\": \"812d2011-f217-404b-b2c8-fa4d65d68656\",\n\"apples\": \"Kerplunk\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "0.0.0.0:3000/documents/812d2011-f217-404b-b2c8-fa4d65d68656",
+          "host": ["0", "0", "0", "0"],
+          "port": "3000",
+          "path": ["documents", "812d2011-f217-404b-b2c8-fa4d65d68656"]
         }
       },
       "response": []
