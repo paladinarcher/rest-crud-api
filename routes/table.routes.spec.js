@@ -10,7 +10,7 @@ const dynamoService = require('../services/dynamodb.service');
 chai.use(chaiHttp);
 chai.should();
 
-describe('DocumentsController', () => {
+describe('TableRoutes', () => {
   // The DynamoDB DocumentClient
   let documentClient;
 
@@ -19,7 +19,7 @@ describe('DocumentsController', () => {
     documentClient = dynamoService.getDocumentClient();
   });
 
-  describe('GET: /documents', () => {
+  describe('GET: /table/{tableName})', () => {
     afterEach(() => {
       documentClient.scan.restore();
     });
@@ -37,7 +37,7 @@ describe('DocumentsController', () => {
       // Act
       chai
         .request(app)
-        .get('/documents')
+        .get('/table/dynamoTable')
         .end((err, res) => {
           // Assert
           res.should.have.status(200);
@@ -55,7 +55,7 @@ describe('DocumentsController', () => {
       // Act
       chai
         .request(app)
-        .get('/documents')
+        .get('/table/dynamoTable')
         .end((err, res) => {
           // Assert
           res.should.have.status(404);
@@ -64,7 +64,7 @@ describe('DocumentsController', () => {
     });
   });
 
-  describe('GET: /documents/{documentId)', () => {
+  describe('GET: /table/{tableName}/{documentId)', () => {
     afterEach(() => {
       documentClient.get.restore();
     });
@@ -83,7 +83,7 @@ describe('DocumentsController', () => {
       // Act
       chai
         .request(app)
-        .get('/documents/5')
+        .get('/table/dynamoTable/5')
         .end((err, res) => {
           // Assert
           res.should.have.status(200);
@@ -101,7 +101,7 @@ describe('DocumentsController', () => {
       // Act
       chai
         .request(app)
-        .post('/documents/5')
+        .post('/table/dynamoTable/5')
         .end((err, res) => {
           // Assert
           res.should.have.status(404);
@@ -110,7 +110,7 @@ describe('DocumentsController', () => {
     });
   });
 
-  describe('POST: /documents', () => {
+  describe('POST: /table/{tableName}', () => {
     afterEach(() => {
       documentClient.put.restore();
     });
@@ -124,7 +124,7 @@ describe('DocumentsController', () => {
       // Act
       chai
         .request(app)
-        .post('/documents')
+        .post('/table/dynamoTable')
         .send('"fruit":"banana"')
         .end((err, res) => {
           // Assert
@@ -143,7 +143,7 @@ describe('DocumentsController', () => {
       // Act
       chai
         .request(app)
-        .post('/documents')
+        .post('/table/dynamoTable')
         .send('"fruit":"banana"')
         .end((err, res) => {
           // Assert
@@ -153,7 +153,7 @@ describe('DocumentsController', () => {
     });
   });
 
-  describe('DELETE: /documents/{documentId)', () => {
+  describe('DELETE: /table/{tableName}/{documentId)', () => {
     afterEach(() => {
       documentClient.delete.restore();
     });
@@ -169,7 +169,7 @@ describe('DocumentsController', () => {
       // Act
       chai
         .request(app)
-        .delete('/documents/5')
+        .delete('/table/dynamoTable/5')
         .end((err, res) => {
           // Assert
           res.should.have.status(200);
@@ -187,7 +187,7 @@ describe('DocumentsController', () => {
       // Act
       chai
         .request(app)
-        .delete('/documents/5')
+        .delete('/table/dynamoTable/5')
         .send('"fruit":"banana"')
         .end((err, res) => {
           // Assert
@@ -197,7 +197,7 @@ describe('DocumentsController', () => {
     });
   });
 
-  describe('PUT: /documents/{documentId)', () => {
+  describe('PUT: /table/{tableName}/{documentId)', () => {
     afterEach(() => {
       documentClient.put.restore();
     });
@@ -211,7 +211,7 @@ describe('DocumentsController', () => {
       // Act
       chai
         .request(app)
-        .put('/documents/5')
+        .put('/table/dynamoTable/5')
         .send('"fruit":"banana"')
         .end((err, res) => {
           // Assert
@@ -230,7 +230,7 @@ describe('DocumentsController', () => {
       // Act
       chai
         .request(app)
-        .put('/documents/5')
+        .put('/table/dynamoTable/5')
         .send('"fruit":"banana"')
         .end((err, res) => {
           // Assert

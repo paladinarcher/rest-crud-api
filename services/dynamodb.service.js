@@ -3,7 +3,7 @@ const uuid = require('uuid');
 
 dynamodb = new AWS.DynamoDB.DocumentClient({
   apiVersion: '2012-08-10',
-  region: 'us-west-2',
+  region: process.env.AWS_REGION,
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
 });
