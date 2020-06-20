@@ -11,16 +11,17 @@ chai.use(chaiHttp);
 chai.should();
 
 describe('TableRoutes', () => {
-  // The DynamoDB DocumentClient
+  // The DynamoDB DocumentClient.
   let documentClient;
 
   beforeEach(() => {
-    // Reset the DynamoDB DocumentClient
+    // Reset the DynamoDB DocumentClient.
     documentClient = dynamoService.getDocumentClient();
   });
 
   describe('GET: /table/{tableName})', () => {
     afterEach(() => {
+      // Set the state of the documentClient operation so the tests don't interfere with eachother.
       documentClient.scan.restore();
     });
 
@@ -66,6 +67,7 @@ describe('TableRoutes', () => {
 
   describe('GET: /table/{tableName}/{documentId)', () => {
     afterEach(() => {
+      // Set the state of the documentClient operation so the tests don't interfere with eachother.
       documentClient.get.restore();
     });
 
@@ -112,6 +114,7 @@ describe('TableRoutes', () => {
 
   describe('POST: /table/{tableName}', () => {
     afterEach(() => {
+      // Set the state of the documentClient operation so the tests don't interfere with eachother.
       documentClient.put.restore();
     });
 
@@ -155,6 +158,7 @@ describe('TableRoutes', () => {
 
   describe('DELETE: /table/{tableName}/{documentId)', () => {
     afterEach(() => {
+      // Set the state of the documentClient operation so the tests don't interfere with eachother.
       documentClient.delete.restore();
     });
 
@@ -178,7 +182,7 @@ describe('TableRoutes', () => {
         });
     });
 
-    it('should return a 405 if DynamoDB has an error', (done) => {
+    it('should return a 404 if DynamoDB has an error', (done) => {
       // Arrange
       sinon.stub(documentClient, 'delete').callsFake((params, callback) => {
         callback({}, undefined);
@@ -191,7 +195,7 @@ describe('TableRoutes', () => {
         .send('"fruit":"banana"')
         .end((err, res) => {
           // Assert
-          res.should.have.status(405);
+          res.should.have.status(404);
           done();
         });
     });
@@ -199,6 +203,7 @@ describe('TableRoutes', () => {
 
   describe('PUT: /table/{tableName}/{documentId)', () => {
     afterEach(() => {
+      // Set the state of the documentClient operation so the tests don't interfere with eachother.
       documentClient.put.restore();
     });
 

@@ -13,6 +13,7 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(cors());
+// Send all requests to the 'table' route to the table.routes file to be resolved.
 app.use('/table', tableRoutes);
 
 app.listen(config.port, config.host, (e) => {

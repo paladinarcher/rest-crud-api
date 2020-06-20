@@ -10,16 +10,17 @@ chai.use(chaiHttp);
 chai.should();
 
 describe('DynamodbService', () => {
-  // The DynamoDB DocumentClient
+  // The DynamoDB DocumentClient.
   let documentClient;
 
   beforeEach(() => {
-    // Reset the DynamoDB DocumentClient
+    // Reset the DynamoDB DocumentClient.
     documentClient = dynamoService.getDocumentClient();
   });
 
   describe('getDocumentsFromTable', () => {
     afterEach(() => {
+      // Set the state of the documentClient operation so the tests don't interfere with eachother.
       documentClient.scan.restore();
     });
 
@@ -69,6 +70,7 @@ describe('DynamodbService', () => {
 
   describe('getDocumentFromTable', () => {
     afterEach(() => {
+      // Set the state of the documentClient operation so the tests don't interfere with eachother.
       documentClient.get.restore();
     });
 
@@ -121,6 +123,7 @@ describe('DynamodbService', () => {
 
   describe('addDocumentToTable', () => {
     afterEach(() => {
+      // Set the state of the documentClient operation so the tests don't interfere with eachother.
       documentClient.put.restore();
     });
 
@@ -167,6 +170,7 @@ describe('DynamodbService', () => {
 
   describe('deleteDocumentFromTable', () => {
     afterEach(() => {
+      // Set the state of the documentClient operation so the tests don't interfere with eachother.
       documentClient.delete.restore();
     });
 
@@ -216,6 +220,7 @@ describe('DynamodbService', () => {
 
   describe('updateDocumentInTable', () => {
     afterEach(() => {
+      // Set the state of the documentClient operation so the tests don't interfere with eachother.
       documentClient.put.restore();
     });
 

@@ -10,7 +10,7 @@
 ```
 AWS_ACCESS_KEY_ID=Your Access Key
 AWS_SECRET_ACCESS_KEY=Your Secret Access Key
-AWS_DYNAMO_TABLE_NAME=Your Table Name
+AWS_REGION=Your AWS Region
 ```
 
 5. Run `docker-compose build` followed by `docker-compose up` This will run the API in development mode running at `0.0.0.0:3000` Changes in the project will be reflected in the API.
