@@ -1,234 +1,281 @@
 {
-  "info": {
-    "_postman_id": "edf4b007-456b-42fc-adf2-3b44c7760aa7",
-    "name": "Document API",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-  },
-  "item": [
-    {
-      "name": "Get Documents",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "id": "ff4bb9a3-27ea-474f-ba1a-a70b11ea60fc",
-            "exec": [
-              "var jsonData = pm.response.json();\r",
-              "\r",
-              "pm.test(\"response is ok\", function () {\r",
-              "    pm.response.to.have.status(200);\r",
-              "});\r",
-              "\r",
-              "pm.test(\"The list of items is defined\", function () {\r",
-              "    pm.expect(jsonData).not.undefined;\r",
-              "    pm.expect(jsonData[0]).not.undefined;\r",
-              "});"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "0.0.0.0:3000/documents",
-          "host": ["0", "0", "0", "0"],
-          "port": "3000",
-          "path": ["documents"]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Get Document By ID",
-      "event": [
-        {
-          "listen": "prerequest",
-          "script": {
-            "id": "9b4d3c52-19f1-472b-9563-74222c1f9497",
-            "exec": [""],
-            "type": "text/javascript"
-          }
-        },
-        {
-          "listen": "test",
-          "script": {
-            "id": "a0a2697b-fa9c-4ad9-a6f0-0366e4e3348d",
-            "exec": [
-              "var jsonData = pm.response.json();\r",
-              "\r",
-              "pm.test(\"response is ok\", function () {\r",
-              "    pm.response.to.have.status(200);\r",
-              "});\r",
-              "\r",
-              "pm.test(\"Retrieves the expected document\", function () {\r",
-              "    pm.expect(jsonData.id).is.to.equal(\"0a4baa10-bd91-4646-a0ff-9a75d6488445\");\r",
-              "    pm.expect(jsonData.here).is.to.equal(\"another one\");\r",
-              "    pm.expect(jsonData.more).is.to.equal(\"data\");\r",
-              "    pm.expect(jsonData.num).is.to.equal(200);\r",
-              "});"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "0.0.0.0:3000/documents/0a4baa10-bd91-4646-a0ff-9a75d6488445",
-          "host": ["0", "0", "0", "0"],
-          "port": "3000",
-          "path": ["documents", "0a4baa10-bd91-4646-a0ff-9a75d6488445"]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Delete Document By ID",
-      "event": [
-        {
-          "listen": "prerequest",
-          "script": {
-            "id": "9b4d3c52-19f1-472b-9563-74222c1f9497",
-            "exec": [""],
-            "type": "text/javascript"
-          }
-        },
-        {
-          "listen": "test",
-          "script": {
-            "id": "a0a2697b-fa9c-4ad9-a6f0-0366e4e3348d",
-            "exec": [
-              "var jsonData = pm.response.json();\r",
-              "\r",
-              "pm.test(\"response is ok\", function () {\r",
-              "    pm.response.to.have.status(200);\r",
-              "});\r",
-              "\r",
-              "pm.test(\"Retrieves the expected document\", function () {\r",
-              "    pm.expect(jsonData.id).is.to.equal(\"a0154743-3712-47eb-87ea-19b98c0aab14\");\r",
-              "});"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "method": "DELETE",
-        "header": [],
-        "url": {
-          "raw": "0.0.0.0:3000/documents/a0154743-3712-47eb-87ea-19b98c0aab14",
-          "host": ["0", "0", "0", "0"],
-          "port": "3000",
-          "path": ["documents", "a0154743-3712-47eb-87ea-19b98c0aab14"]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Post Document",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "id": "9f9b7fb6-e775-48d8-8759-c002d6936236",
-            "exec": [
-              "var jsonData = pm.response.json();\r",
-              "\r",
-              "pm.test(\"response is ok\", function () {\r",
-              "    pm.response.to.have.status(200);\r",
-              "});\r",
-              "\r",
-              "pm.test(\"ID for the new document is returned\", function () {\r",
-              "    pm.response.to.be.withBody;\r",
-              "    pm.expect(jsonData.id.length).is.to.equal(36);\r",
-              "});"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "name": "Content-Type",
-            "value": "application/json",
-            "type": "text"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n\"here\": \"another one\",\n\"more\": \"data\",\n\"num\": 200\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "0.0.0.0:3000/documents",
-          "host": ["0", "0", "0", "0"],
-          "port": "3000",
-          "path": ["documents"]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Post Document Copy",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "id": "298725b6-5f36-4cf4-8cb9-816bd3d9e906",
-            "exec": [
-              "var jsonData = pm.response.json();\r",
-              "\r",
-              "pm.test(\"response is ok\", function () {\r",
-              "    pm.response.to.have.status(200);\r",
-              "});\r",
-              "\r",
-              "pm.test(\"ID for the document is returned\", function () {\r",
-              "    pm.response.to.be.withBody;\r",
-              "    pm.expect(jsonData.id.length).is.to.equal(36);\r",
-              "});"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "method": "PUT",
-        "header": [
-          {
-            "key": "Content-Type",
-            "name": "Content-Type",
-            "value": "application/json",
-            "type": "text"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n\"id\": \"812d2011-f217-404b-b2c8-fa4d65d68656\",\n\"apples\": \"Kerplunk\"\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "0.0.0.0:3000/documents/812d2011-f217-404b-b2c8-fa4d65d68656",
-          "host": ["0", "0", "0", "0"],
-          "port": "3000",
-          "path": ["documents", "812d2011-f217-404b-b2c8-fa4d65d68656"]
-        }
-      },
-      "response": []
-    }
-  ],
-  "protocolProfileBehavior": {}
+	"info": {
+		"_postman_id": "edf4b007-456b-42fc-adf2-3b44c7760aa7",
+		"name": "Document API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Documents",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ff4bb9a3-27ea-474f-ba1a-a70b11ea60fc",
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"response is ok\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"The list of items is defined\", function () {\r",
+							"    pm.expect(jsonData).not.undefined;\r",
+							"    pm.expect(jsonData[0]).not.undefined;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "0.0.0.0:3000/table/documents",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "3000",
+					"path": [
+						"table",
+						"documents"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Documents Copy",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "9b4d3c52-19f1-472b-9563-74222c1f9497",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "a0a2697b-fa9c-4ad9-a6f0-0366e4e3348d",
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"response is ok\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Retrieves the expected document\", function () {\r",
+							"    pm.expect(jsonData.id).is.to.equal(\"0a4baa10-bd91-4646-a0ff-9a75d6488445\");\r",
+							"    pm.expect(jsonData.here).is.to.equal(\"another one\");\r",
+							"    pm.expect(jsonData.more).is.to.equal(\"data\");\r",
+							"    pm.expect(jsonData.num).is.to.equal(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "0.0.0.0:3000/table/documents/0a4baa10-bd91-4646-a0ff-9a75d6488445",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "3000",
+					"path": [
+						"table",
+						"documents",
+						"0a4baa10-bd91-4646-a0ff-9a75d6488445"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Document By ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4f9087e1-3d43-42e5-977d-4ba2d177768e",
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"response is ok\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Deletes the expected document\", function () {\r",
+							"    pm.expect(jsonData.id).is.to.equal(\"a0154743-3712-47eb-87ea-19b98c0aab14\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "1d48eded-ee89-4869-a8d9-2d9e10ec9988",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "0.0.0.0:3000/table/documents/a0154743-3712-47eb-87ea-19b98c0aab14",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "3000",
+					"path": [
+						"table",
+						"documents",
+						"a0154743-3712-47eb-87ea-19b98c0aab14"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Document",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9f9b7fb6-e775-48d8-8759-c002d6936236",
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"response is ok\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"ID for the new document is returned\", function () {\r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.expect(jsonData.id.length).is.to.equal(36);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"here\": \"another one\",\n\"more\": \"data\",\n\"num\": 200\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "0.0.0.0:3000/table/documents",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "3000",
+					"path": [
+						"table",
+						"documents"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Document Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "298725b6-5f36-4cf4-8cb9-816bd3d9e906",
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"response is ok\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"ID for the document is returned\", function () {\r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.expect(jsonData.id.length).is.to.equal(36);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"id\": \"812d2011-f217-404b-b2c8-fa4d65d68656\",\n\"apples\": \"Kerplunk\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "0.0.0.0:3000/table/documents/812d2011-f217-404b-b2c8-fa4d65d68656",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "3000",
+					"path": [
+						"table",
+						"documents",
+						"812d2011-f217-404b-b2c8-fa4d65d68656"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
 }
