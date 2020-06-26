@@ -19,7 +19,7 @@ describe('getDynamodbFilters', () => {
     const expected = 'mistborn=:mistborn AND elantris=:elantris';
 
     // Act
-    actual = await dynamoService.getDynamodbFilters(filters);
+    let actual = await dynamoService.getDynamodbFilters(filters);
 
     // Assert
     actual.filterExpression.should.equal(expected);
@@ -34,7 +34,7 @@ describe('getDynamodbFilters', () => {
     const expected = { ':mistborn': 'Vin', ':elantris': 200 };
 
     // Act
-    actual = await dynamoService.getDynamodbFilters(filters);
+    let actual = await dynamoService.getDynamodbFilters(filters);
 
     // Assert
     actual.expressionAttributeValues[':mistborn'].should.equal(
@@ -72,7 +72,7 @@ describe('DynamodbService', () => {
         });
 
         // Act
-        actual = await dynamoService.getDocumentsFromTable('documents', []);
+        let actual = await dynamoService.getDocumentsFromTable('documents', []);
 
         // Assert
         actual.length.should.equal(expected.Items.length);
@@ -94,7 +94,7 @@ describe('DynamodbService', () => {
         });
 
         // Act
-        actual = await dynamoService.getDocumentsFromTable('documents', []);
+        await dynamoService.getDocumentsFromTable('documents', []);
 
         // Assert
         chai.assert.fail('Failed to return the Dynamo ERROR');
@@ -124,7 +124,7 @@ describe('DynamodbService', () => {
         });
 
         // Act
-        actual = await dynamoService.getDocumentFromTable(
+        let actual = await dynamoService.getDocumentFromTable(
           'documents',
           expected.id
         );
@@ -147,7 +147,7 @@ describe('DynamodbService', () => {
         });
 
         // Act
-        actual = await dynamoService.getDocumentFromTable('documents');
+        await dynamoService.getDocumentFromTable('documents');
 
         // Assert
         chai.assert.fail('Failed to return the Dynamo data');
@@ -173,7 +173,7 @@ describe('DynamodbService', () => {
         });
 
         // Act
-        actual = await dynamoService.addDocumentToTable('documents', document);
+        let actual = await dynamoService.addDocumentToTable('documents', document);
 
         // Assert
         actual.id.should.exist;
@@ -194,7 +194,7 @@ describe('DynamodbService', () => {
         });
 
         // Act
-        actual = await dynamoService.addDocumentToTable('documents', document);
+        await dynamoService.addDocumentToTable('documents', document);
 
         // Assert
         chai.assert.fail('Failed to return the document id');
@@ -221,7 +221,7 @@ describe('DynamodbService', () => {
         });
 
         // Act
-        actual = await dynamoService.deleteDocumentFromTable(
+        let actual = await dynamoService.deleteDocumentFromTable(
           'documents',
           expected.id
         );
@@ -244,7 +244,7 @@ describe('DynamodbService', () => {
         });
 
         // Act
-        actual = await dynamoService.deleteDocumentFromTable('documents');
+        await dynamoService.deleteDocumentFromTable('documents');
 
         // Assert
         chai.assert.fail('Failed to delete the Dynamo data');
@@ -271,7 +271,7 @@ describe('DynamodbService', () => {
         });
 
         // Act
-        actual = await dynamoService.updateDocumentInTable(
+        let actual = await dynamoService.updateDocumentInTable(
           'documents',
           documentId,
           document
@@ -297,7 +297,7 @@ describe('DynamodbService', () => {
         });
 
         // Act
-        actual = await dynamoService.updateDocumentInTable(
+        await dynamoService.updateDocumentInTable(
           'documents',
           documentId,
           document
