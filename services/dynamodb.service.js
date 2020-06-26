@@ -12,19 +12,69 @@ dynamodb = new AWS.DynamoDB.DocumentClient({
 // https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB/DocumentClient.html
 
 /**
+ * Builds the DynamoDB FilterExpression string and ExpressionAttributeValues object from a list of filters.
+ * @param {{key: string, value: string}[]} filters The filters to scan DynamoDB with.
+ * @return {{filterExpression: string, expressionAttributeValues: Object.<string, number|boolean>}} The DynamoDB FilterExpression and ExpressionAttributeValues.
+ */
+getDynamodbFilters = (filters) => {
+  // The Filter Expression we are building.
+  let filterExpression = '';
+  const attributeValues = {};
+
+  // Itterate over the filters.
+  filters.forEach((filter, i) => {
+    console.log(filter);
+    // Keep track of the filter we are buildin to add to the expression.
+    let stringToAdd = '';
+
+    // Add the comma and space if it isn't the first filter.
+    if (!!i) {
+      stringToAdd += ' AND ';
+    }
+
+    // The Attribute key.
+    const attributeKey = `:${filter.key}`;
+
+    // Create an filter.
+    stringToAdd += `${filter.key}=${attributeKey}`;
+
+    // Add the filter string to the expression.
+    filterExpression += stringToAdd;
+
+    // Add the Attribute Value.
+    attributeValues[attributeKey] = isNaN(filter.value)
+      ? filter.value
+      : +filter.value;
+  });
+
+  return {
+    filterExpression: filterExpression,
+    expressionAttributeValues: attributeValues,
+  };
+};
+
+/**
  * The DynamodbService is used to handle logic involving interactions with DynamoDB.
  */
 DynamodbService = {
   /**
    * Gets a list of documents from the table requested in the params.
    * @param {string} tableName The name of the table to operate against.
+   * @param {{key: string, value: string}[]} filters The filters to scan DynamoDB with.
    * @return {Promise} If resolved it will hold a JSON list of the documents in the table. If rejected it will return the DynamoDB error.
    */
-  getDocumentsFromTable: (tableName) => {
+  getDocumentsFromTable: (tableName, filters) => {
     // paramaters for the DynamoDB scan request.
     const params = {
       TableName: tableName,
     };
+
+    if (filters.length > 0) {
+      const computedFilters = getDynamodbFilters(filters);
+      params.FilterExpression = computedFilters.filterExpression;
+      params.ExpressionAttributeValues =
+        computedFilters.expressionAttributeValues;
+    }
 
     // Return a promise because calls to DynamoDB are asynchronous.
     return new Promise((resolve, reject) => {
@@ -167,6 +217,13 @@ DynamodbService = {
   getDocumentClient: () => {
     return dynamodb;
   },
+
+  /**
+   * Builds the DynamoDB FilterExpression string and ExpressionAttributeValues object from a list of filters.
+   * @param {{key: string, value: string}[]} filters The filters to scan DynamoDB with.
+   * @return {{filterExpression: string, expressionAttributeValues: Object.<string, number|boolean>}} The DynamoDB FilterExpression and ExpressionAttributeValues.
+   */
+  getDynamodbFilters: (filters) => getDynamodbFilters(filters),
 };
 
 module.exports = DynamodbService;

@@ -15,8 +15,14 @@ TableController = {
    */
   getDocumentsFromTable: (req, res) => {
     try {
+      // Get the filters if there are any.
+      filters = Object.keys(req.query).map((key) => ({
+        key,
+        value: req.query[key],
+      }));
+
       // Make the call to DynamoDB
-      DynamodbService.getDocumentsFromTable(req.params.tableName).then(
+      DynamodbService.getDocumentsFromTable(req.params.tableName, filters).then(
         (resp) => {
           // Success
           res.status(200).send(resp);
