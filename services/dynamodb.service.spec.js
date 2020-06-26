@@ -9,6 +9,43 @@ const dynamoService = require('./dynamodb.service');
 chai.use(chaiHttp);
 chai.should();
 
+describe('getDynamodbFilters', () => {
+  it('should build the FilterExperession properly', async () => {
+    // Arrange
+    const filters = [
+      { key: 'mistborn', value: 'Vin' },
+      { key: 'elantris', value: '200' },
+    ];
+    const expected = 'mistborn=:mistborn AND elantris=:elantris';
+
+    // Act
+    actual = await dynamoService.getDynamodbFilters(filters);
+
+    // Assert
+    actual.filterExpression.should.equal(expected);
+  });
+
+  it('should build the ExpressionAttributeValues properly', async () => {
+    // Arrange
+    const filters = [
+      { key: 'mistborn', value: 'Vin' },
+      { key: 'elantris', value: '200' },
+    ];
+    const expected = { ':mistborn': 'Vin', ':elantris': 200 };
+
+    // Act
+    actual = await dynamoService.getDynamodbFilters(filters);
+
+    // Assert
+    actual.expressionAttributeValues[':mistborn'].should.equal(
+      expected[':mistborn']
+    );
+    actual.expressionAttributeValues[':elantris'].should.equal(
+      expected[':elantris']
+    );
+  });
+});
+
 describe('DynamodbService', () => {
   // The DynamoDB DocumentClient.
   let documentClient;
@@ -35,7 +72,7 @@ describe('DynamodbService', () => {
         });
 
         // Act
-        actual = await dynamoService.getDocumentsFromTable('documents');
+        actual = await dynamoService.getDocumentsFromTable('documents', []);
 
         // Assert
         actual.length.should.equal(expected.Items.length);
@@ -57,7 +94,7 @@ describe('DynamodbService', () => {
         });
 
         // Act
-        actual = await dynamoService.getDocumentsFromTable('documents');
+        actual = await dynamoService.getDocumentsFromTable('documents', []);
 
         // Assert
         chai.assert.fail('Failed to return the Dynamo ERROR');
