@@ -127,17 +127,14 @@ DynamodbService = {
    */
   addDocumentToTable: (tableName, document) => {
     // if we don't have a specified id, create one
-    if(typeof document.id != "string") {
+    if (typeof document.id != 'string') {
       document.id = uuid.v4();
     }
-
-    // Generate an ID to save the new document with.
-    const documentId = document.id;
 
     // parameters for the DynamoDB put request
     const docToAdd = {
       Item: document,
-      TableName: tableName
+      TableName: tableName,
     };
 
     // Return a promise because calls to DynamoDB are asynchronous.

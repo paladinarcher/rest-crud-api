@@ -19,7 +19,7 @@ describe('getDynamodbFilters', () => {
     const expected = 'mistborn=:mistborn AND elantris=:elantris';
 
     // Act
-    let actual = await dynamoService.getDynamodbFilters(filters);
+    const actual = await dynamoService.getDynamodbFilters(filters);
 
     // Assert
     actual.filterExpression.should.equal(expected);
@@ -34,7 +34,7 @@ describe('getDynamodbFilters', () => {
     const expected = { ':mistborn': 'Vin', ':elantris': 200 };
 
     // Act
-    let actual = await dynamoService.getDynamodbFilters(filters);
+    const actual = await dynamoService.getDynamodbFilters(filters);
 
     // Assert
     actual.expressionAttributeValues[':mistborn'].should.equal(
@@ -72,7 +72,10 @@ describe('DynamodbService', () => {
         });
 
         // Act
-        let actual = await dynamoService.getDocumentsFromTable('documents', []);
+        const actual = await dynamoService.getDocumentsFromTable(
+          'documents',
+          []
+        );
 
         // Assert
         actual.length.should.equal(expected.Items.length);
@@ -124,7 +127,7 @@ describe('DynamodbService', () => {
         });
 
         // Act
-        let actual = await dynamoService.getDocumentFromTable(
+        const actual = await dynamoService.getDocumentFromTable(
           'documents',
           expected.id
         );
@@ -173,7 +176,10 @@ describe('DynamodbService', () => {
         });
 
         // Act
-        let actual = await dynamoService.addDocumentToTable('documents', document);
+        const actual = await dynamoService.addDocumentToTable(
+          'documents',
+          document
+        );
 
         // Assert
         actual.id.should.exist;
@@ -182,9 +188,9 @@ describe('DynamodbService', () => {
       }
     });
 
-    it("should save a document using the designated ID and return an object with that same ID", async () => {
+    it('should save a document using the designated ID and return an object with that same ID', async () => {
       try {
-        const id = "ThisIsATestID";
+        const id = 'ThisIsATestID';
         // Arrange
         document = { id: id, stuff: 'test_stuff' };
         sinon.stub(documentClient, 'put').callsFake((params, callback) => {
@@ -192,8 +198,11 @@ describe('DynamodbService', () => {
         });
 
         // Act
-        let actual = await dynamoService.addDocumentToTable('documents', document);
-console.log(actual, document);
+        const actual = await dynamoService.addDocumentToTable(
+          'documents',
+          document
+        );
+
         // Assert
         actual.id.should.equal(id);
       } catch (e) {
@@ -240,7 +249,7 @@ console.log(actual, document);
         });
 
         // Act
-        let actual = await dynamoService.deleteDocumentFromTable(
+        const actual = await dynamoService.deleteDocumentFromTable(
           'documents',
           expected.id
         );
@@ -290,7 +299,7 @@ console.log(actual, document);
         });
 
         // Act
-        let actual = await dynamoService.updateDocumentInTable(
+        const actual = await dynamoService.updateDocumentInTable(
           'documents',
           documentId,
           document
