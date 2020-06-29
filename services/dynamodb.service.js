@@ -148,7 +148,7 @@ DynamodbService = {
           reject(err);
         } else {
           // DynamoDB successfully performed the operation.
-          resolve(docToAdd);
+          resolve(docToAdd.Item);
         }
       });
     });

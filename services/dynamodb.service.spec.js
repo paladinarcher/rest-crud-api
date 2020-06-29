@@ -193,7 +193,7 @@ describe('DynamodbService', () => {
 
         // Act
         let actual = await dynamoService.addDocumentToTable('documents', document);
-
+console.log(actual, document);
         // Assert
         actual.id.should.equal(id);
       } catch (e) {
