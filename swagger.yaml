@@ -33,12 +33,16 @@ paths:
           type: 'string'
         - in: 'body'
           name: 'body'
-          description: 'A new document that needs to be added to the data store. Note, if the input object has a property `id`, it will be overwritten by the database and the returned object will contain the new `id`'
+          description: 'A new document that needs to be added to the data store. Note, if the input object has no property `id`, it will be generated and returned with the new object as `id`'
           required: true
           type: 'object'
+          properties:
+            id: 
+              type: integer
+              description: "Optionally, the ID can be specified. If none is specified, one will be created for you."
       responses:
         200:
-          description: 'successful operation. Object returned has the new `id` assigned by the database.'
+          description: 'successful operation. Object returned has the new `id` assigned by the database, if none was specified originally.'
           schema:
             $ref: '#/definitions/Document'
         405:

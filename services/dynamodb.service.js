@@ -126,16 +126,18 @@ DynamodbService = {
    * @return {Promise} If resolved it will hold JSON with the new document's ID. If rejected it will return the DynamoDB error.
    */
   addDocumentToTable: (tableName, document) => {
-    // Generate an ID to save the new document with.
-    const documentId = uuid.v4();
+    // if we don't have a specified id, create one
+    if(typeof document.id != "string") {
+      document.id = uuid.v4();
+    }
 
-    // paramaters for the DynamoDB put request.
+    // Generate an ID to save the new document with.
+    const documentId = document.id;
+
+    // parameters for the DynamoDB put request
     const docToAdd = {
-      Item: {
-        ...document,
-        id: documentId,
-      },
-      TableName: tableName,
+      Item: document,
+      TableName: tableName
     };
 
     // Return a promise because calls to DynamoDB are asynchronous.
@@ -146,7 +148,7 @@ DynamodbService = {
           reject(err);
         } else {
           // DynamoDB successfully performed the operation.
-          resolve({ id: documentId });
+          resolve(docToAdd);
         }
       });
     });
