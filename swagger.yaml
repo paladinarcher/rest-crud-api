@@ -33,11 +33,14 @@ paths:
           type: 'string'
         - in: 'body'
           name: 'body'
-          description: 'A new document that needs to be added to the data store'
+          description: 'A new document that needs to be added to the data store. Note, if the input object has a property `id`, it will be overwritten by the database and the returned object will contain the new `id`'
           required: true
+          type: 'object'
+      responses:
+        200:
+          description: 'successful operation. Object returned has the new `id` assigned by the database.'
           schema:
             $ref: '#/definitions/Document'
-      responses:
         405:
           description: 'Invalid input'
     get:
