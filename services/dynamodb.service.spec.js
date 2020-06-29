@@ -182,6 +182,25 @@ describe('DynamodbService', () => {
       }
     });
 
+    it("should save a document using the designated ID and return an object with that same ID", async () => {
+      try {
+        const id = "ThisIsATestID";
+        // Arrange
+        document = { id: id, stuff: 'test_stuff' };
+        sinon.stub(documentClient, 'put').callsFake((params, callback) => {
+          callback(undefined, {});
+        });
+
+        // Act
+        let actual = await dynamoService.addDocumentToTable('documents', document);
+
+        // Assert
+        actual.id.should.equal(id);
+      } catch (e) {
+        chai.assert.fail('Failed to return documentId equal to designated ID');
+      }
+    });
+
     it('should return errors from DynamoDB', async () => {
       const expected = {
         error: { id: 6, text: 'error text' },
