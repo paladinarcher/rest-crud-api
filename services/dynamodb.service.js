@@ -16,7 +16,7 @@ dynamodb = new AWS.DynamoDB.DocumentClient({
  * @param {{key: string, value: string}[]} filters The filters to scan DynamoDB with.
  * @return {{filterExpression: string, expressionAttributeValues: Object.<string, number|boolean>}} The DynamoDB FilterExpression and ExpressionAttributeValues.
  */
-getDynamodbFilters = (filters) => {
+const getDynamodbFilters = (filters) => {
   // The Filter Expression we are building.
   let filterExpression = '';
   const attributeValues = {};
