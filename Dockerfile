@@ -6,7 +6,8 @@ WORKDIR /usr/src/app
 
 COPY . .
 
-RUN npm install
+RUN npm install && \
+  npm install -g --force nodemon
 
 EXPOSE 3000
 
