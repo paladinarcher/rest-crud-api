@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const tableRoutes = require('./routes/table.routes');
+const pingRoutes = require('./routes/ping.routes');
 const swaggerRoutes = require('./routes/swagger.routes');
 const cors = require('cors');
 
@@ -16,6 +17,7 @@ app.use(bodyParser.json());
 app.use(cors());
 // Send all requests to the 'table' route to the table.routes file to be resolved.
 app.use('/table', tableRoutes);
+app.use('/ping', pingRoutes);
 app.use(swaggerRoutes);
 
 app.listen(config.port, config.host, (e) => {
